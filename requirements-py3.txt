@@ -1,0 +1,5 @@
+pbr	   	     	   	     	 # Apache-2.0
+ipaddress				 # Python-2.0
+netifaces				 # MIT
+paramiko				 # LGPL-2.1
+sphinx				         # BSD-2-Clause

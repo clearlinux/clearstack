@@ -1,0 +1,22 @@
+.coverage
+cover/
+.testrepository
+subunit.log
+.venv
+*.pyc
+.idea
+*.sw?
+*.egg?
+*~
+.tox
+ChangeLog
+build
+dist
+clearstack.egg-info
+clearstack/versioninfo
+# Development environment files
+.project
+.pydevproject
+.DS_Store
+covhtml/
+tags

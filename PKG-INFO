@@ -1,0 +1,17 @@
+Metadata-Version: 1.1
+Name: clearstack
+Version: 1.1.4
+Summary: Tool for set up an Openstack environment
+Home-page:
+Author: Alberto Murillo, Julio Montes, Obed Muñoz, Victor Morales
+License: Apache-2.0
+Description: Tool for set up an Openstack environment
+Keywords: Openstack
+Platform: Unix
+Classifier: Environment :: OpenStack
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
