@@ -3,7 +3,8 @@ Name: clearstack
 Version: 1.1.4
 Summary: Tool for set up an Openstack environment
 Home-page:
-Author: Alberto Murillo, Julio Montes, Obed Muñoz, Victor Morales
+Author: Alberto Murillo, Julio Montes, Obed Munoz, Victor Morales
+Author-email: intel.com
 License: Apache-2.0
 Description: Tool for set up an Openstack environment
 Keywords: Openstack

@@ -2,7 +2,7 @@
 # Copyright (c) 2015 Intel Corporation
 #
 # Author: Alberto Murillo <alberto.murillo.silva@intel.com>
-# Author: Obed Muñoz <obed.n.munoz@intel.com>
+# Author: Obed Munoz <obed.n.munoz@intel.com>
 # Author: Victor Morales <victor.morales@intel.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

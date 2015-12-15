@@ -3,7 +3,7 @@
 #
 # Author: Alberto Murillo <alberto.murillo.silva@intel.com>
 # Author: Julio Montes <julio.montes@intel.com>
-# Author: Obed Muñoz <obed.n.munoz@intel.com>
+# Author: Obed Munoz <obed.n.munoz@intel.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
