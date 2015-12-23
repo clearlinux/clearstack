@@ -53,30 +53,6 @@ class Nova(OpenStackService):
         LOG.debug("syncing database")
         util.run_command("su -s /bin/sh -c \"nova-manage db sync\" nova")
 
-    def create_network(self):
-        LOG.debug("Creating network")
-        command = ("nova-manage network create --bridge=br100"
-                   "--label=demo-net --fixed_range_v4=%s"
-                   % CONF['CONFIG_NOVA_NETWORK_FIXEDRANGE'])
-        try:
-            util.run_command("nova network-show demo-net", environ=self._env)
-        except:
-            command = ("nova-manage network create --bridge=br100 "
-                       "--label=demo-net --fixed_range_v4=%s"
-                       % CONF['CONFIG_NOVA_NETWORK_FIXEDRANGE'])
-            if util.str2bool(CONF['CONFIG_NOVA_NETWORK_MULTIHOST']):
-                command += " --multi_host=T"
-            util.run_command(command, environ=self._env)
-
-    def create_floating_ips(self):
-        LOG.debug("Creating floating ips")
-        try:
-            util.run_command("nova floating-ip-pool-list | grep nova")
-        except:
-            cmd = ("nova-manage floating create --pool nova "
-                   "--ip_range=%s" % CONF['CONFIG_NOVA_NETWORK_FLOATRANGE'])
-            util.run_command(cmd, environ=self._env)
-
     def ceilometer_enable(self, configfile):
         ceilometer = Ceilometer.get()
         ceilometer_cfg = "/etc/ceilometer/ceilometer.conf"
