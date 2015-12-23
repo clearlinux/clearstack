@@ -63,33 +63,6 @@ if not clearlinux.support_hw_acceleration():
 
 util.write_config(config_file, config)
 
-# Setup compute Networking
-if not util.str2bool(CONF['CONFIG_NEUTRON_INSTALL']):
-    services.append("nova-network")
-    network_manager = CONF['CONFIG_NOVA_NETWORK_MANAGER']
-    network_size = CONF['CONFIG_NOVA_NETWORK_SIZE']
-    multihost = CONF['CONFIG_NOVA_NETWORK_MULTIHOST']
-    network_pubif = CONF['CONFIG_NOVA_NETWORK_PUBIF']
-    network_privif = CONF['CONFIG_NOVA_COMPUTE_PRIVIF']
-    config = \
-        "[DEFAULT]\n" + \
-        "network_api_class=nova.network.api.API\n" + \
-        "security_group_api=nova\n" + \
-        "firewall_driver=" + \
-        "nova.virt.libvirt.firewall.IptablesFirewallDriver\n" + \
-        "network_size=%s\n" % network_size + \
-        "allow_same_net_traffic=False\n" + \
-        "multi_host=%s\n" % multihost + \
-        "send_arp_for_ha=True\n" + \
-        "share_dhcp_address=True\n" + \
-        "force_dhcp_release=True\n" + \
-        "flat_network_bridge=br100\n" + \
-        "public_interface=%s\n" % network_pubif + \
-        "flat_interface=%s\n" % network_privif
-    if util.str2bool(CONF['CONFIG_NOVA_NETWORK_AUTOASSIGNFLOATINGIP']):
-        config += "auto_assign_floating_ip = True\n"
-    util.write_config(config_file, config)
-
 if util.str2bool(CONF['CONFIG_CEILOMETER_INSTALL']):
     nova.ceilometer_enable(config_file)
 

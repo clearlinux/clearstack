@@ -31,14 +31,7 @@ if util.str2bool(CONF['CONFIG_PROVISION_DEMO']):
     format = CONF['CONFIG_PROVISION_IMAGE_FORMAT']
     url = CONF['CONFIG_PROVISION_IMAGE_URL']
     glance.create_image(name, format, url, public=True)
-
-    fr = CONF['CONFIG_PROVISION_DEMO_FLOATRANGE']
-    CONF['CONFIG_NOVA_NETWORK_FLOATRANGE'] = fr
-
-if not util.str2bool(CONF['CONFIG_NEUTRON_INSTALL']):
-    nova.create_network()
-    nova.create_floating_ips()
-else:
-    neutron.create_network('private', public=False)
-    neutron.create_network('public', public=True)
+    floating_range = CONF['CONFIG_PROVISION_DEMO_FLOATRANGE']
+    neutron.create_network('private', '10.0.0.0/24', public=False)
+    neutron.create_network('public', floating_range, public=True)
     neutron.create_router('router', gw='public', interfaces=['private'])

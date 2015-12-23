@@ -52,14 +52,6 @@ config = \
     "host=%s\n" % CONF['CONFIG_CONTROLLER_HOST']
 util.write_config(config_file, config)
 
-# Setup nova-network if neutron is not installed
-if not util.str2bool(CONF['CONFIG_NEUTRON_INSTALL']):
-    config = \
-        "[DEFAULT]\n" + \
-        "network_api_class = nova.network.api.API\n" + \
-        "security_group_api = nova\n"
-    util.write_config(config_file, config)
-
 if CONF['CONFIG_HTTP_SERVICE'] == 'nginx':
     util.link_file('/usr/share/nginx/conf.d/nova-api.template',
                    '/etc/nginx/nova-api.conf')

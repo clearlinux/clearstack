@@ -206,11 +206,8 @@ class Neutron(OpenStackService):
         util.write_config("/etc/neutron/vpnaas_agent.ini", config)
         self._services += ['ipsec', 'neutron-vpn-agent']
 
-    def create_network(self, name, public=None):
-        if public:
-            cidr = IPv4Network(CONF['CONFIG_NOVA_NETWORK_FLOATRANGE'])
-        else:
-            cidr = IPv4Network(CONF['CONFIG_NOVA_NETWORK_FIXEDRANGE'])
+    def create_network(self, name, network, public=None):
+        cidr = IPv4Network(network)
         cidr_e = cidr.exploded
         cidr_gw = (cidr.network_address + 1).exploded
         cidr_start = (cidr.network_address + 2).exploded
