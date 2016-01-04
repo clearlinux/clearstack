@@ -20,7 +20,6 @@
 #
 
 import sys
-import socket
 
 from common import util
 from common.singleton import Singleton
@@ -92,20 +91,19 @@ class MariaDB:
 
     def setup_database(self, database, user, password, host):
         LOG.debug("setting up database")
-        mariadb_host = socket.gethostbyaddr(CONF["CONFIG_MARIADB_HOST"])[0]
         mariadb_user = CONF["CONFIG_MARIADB_USER"]
         mariadb_pw = CONF["CONFIG_MARIADB_PW"]
-        util.run_command("mysql -u{0} -p{1} -h{2} -e"
-                         " \"CREATE DATABASE if not exists {3};\""
-                         .format(mariadb_user, mariadb_pw, mariadb_host,
-                                 database), debug=False)
-        util.run_command("mysql -u{0} -p{1} -h{2} -e"
-                         " \"GRANT ALL PRIVILEGES ON {3}.* TO"
-                         " '{4}'@'localhost' IDENTIFIED BY '{5}';\""
-                         .format(mariadb_user, mariadb_pw, mariadb_host,
-                                 database, user, password), debug=False)
-        util.run_command("mysql -u{0} -p{1} -h{2} -e"
-                         " \"GRANT ALL PRIVILEGES ON {3}.* TO '{4}'@'{5}'"
-                         " IDENTIFIED BY '{6}';\""
-                         .format(mariadb_user, mariadb_pw, mariadb_host,
-                                 database, user, host, password), debug=False)
+        util.run_command("mysql -u{0} -p{1} -e"
+                         " \"CREATE DATABASE if not exists {2};\""
+                         .format(mariadb_user, mariadb_pw, database),
+                         debug=False)
+        util.run_command("mysql -u{0} -p{1} -e"
+                         " \"GRANT ALL PRIVILEGES ON {2}.* TO"
+                         " '{3}'@'localhost' IDENTIFIED BY '{4}';\""
+                         .format(mariadb_user, mariadb_pw, database, user,
+                                 password), debug=False)
+        util.run_command("mysql -u{0} -p{1} -e"
+                         " \"GRANT ALL PRIVILEGES ON {2}.* TO '{3}'@'{4}'"
+                         " IDENTIFIED BY '{5}';\""
+                         .format(mariadb_user, mariadb_pw, database, user,
+                                 host, password), debug=False)
