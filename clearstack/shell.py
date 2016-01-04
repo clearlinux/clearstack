@@ -33,11 +33,8 @@ from clearstack.common.util import LOG
 
 class ClearstackConfiguratorShell(object):
 
-    def __init__(self, parser_class=argparse.ArgumentParser):
-        self.parser_class = parser_class
-
     def get_base_parser(self):
-        parser = self.parser_class(
+        parser = argparse.ArgumentParser(
             prog='clearstack',
             description=__doc__.strip(),
             epilog='See "clearstack help COMMAND" '

@@ -61,21 +61,6 @@ class Controller:
                               for argument in group.get_all_arguments()])
         return arguments
 
-    def remove_argument(self, group_name, conf_name):
-        for group in self._groups:
-            if group.group_name == group_name:
-                for arg in group.arguments:
-                    if arg.conf_name == conf_name:
-                        group.arguments.remove(arg)
-                        return True
-        return False
-
-    def remove_validators(self, conf_names):
-        for group in self._groups:
-            for arg in group.arguments:
-                if arg.conf_name in conf_names:
-                    arg.validators.clear()
-
     def validate_groups(self, conf_values):
         """ Load validation functions, in order to check
         the values in the answer file """

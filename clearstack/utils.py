@@ -61,7 +61,6 @@ def run_recipe(recipe_file, recipe_src, hosts):
     _run_recipe_in_hosts(recipe_file, recipes_dir, hosts)
     return True
 
-
 def _run_recipe_local(recipe_file):
     if recipe_file.endswith('.py'):
         util.run_command("python3 {0}".format(recipe_file))
@@ -93,7 +92,6 @@ def get_all_hosts():
     hosts.add(conf["CONFIG_AMQP_HOST"])
     hosts.add(conf["CONFIG_MARIADB_HOST"])
     hosts.add(conf["CONFIG_MONGODB_HOST"])
-
     return hosts
 
 
@@ -108,8 +106,8 @@ def generate_conf_file(conf_file):
         os.makedirs(dir_name)
 
     config_file.add_section("general")
-    for key in conf.keys():
-        config_file.set("general", key, '{0}'.format(conf[key]))
+    for key, value in conf.items():
+        config_file.set("general", key, '{0}'.format(value))
 
     with open(conf_file, 'w') as f:
         config_file.write(f)
@@ -117,54 +115,44 @@ def generate_conf_file(conf_file):
 
 def copy_resources():
     _copy_resources_to_hosts(get_all_hosts())
-    return True
 
 
 def _copy_resources_local():
     resources_dir = os.path.dirname(os.path.realpath(__file__))
     modules_src = "{0}/modules".format(resources_dir)
     common_src = "{0}/common".format(resources_dir)
-
     modules_dst = "{0}/modules".format(__recipes_directory)
     common_dst = "{0}/common".format(__recipes_directory)
-    conf_file = "{0}/defaults.conf".format(__recipes_directory)
-
-    generate_conf_file(conf_file)
     shutil.copytree(modules_src, modules_dst)
     shutil.copytree(common_src, common_dst)
 
 
 def _copy_resources_to_hosts(_hosts):
+    ssh = SshHandler.get()
     try:
-        SshHandler.get().test_hosts(_hosts)
+        ssh.test_hosts(_hosts)
     except Exception as e:
         raise e
 
-    hosts = set(_hosts)
-    ssh = SshHandler.get()
     resources_dir = os.path.dirname(os.path.realpath(__file__))
     modules_dir = "{0}/modules".format(resources_dir)
     common_dir = "{0}/common".format(resources_dir)
     conf_file = "{0}/defaults.conf".format(__recipes_directory)
 
-    if util.has_localhost(hosts):
+    if util.has_localhost(_hosts):
         _copy_resources_local()
+        util.remove_localhost(_hosts)
 
-    util.remove_localhost(hosts)
-
-    if not os.path.isfile(conf_file):
-        generate_conf_file(conf_file)
+    generate_conf_file(conf_file)
 
     """ Copy modules and conf to hosts """
-    for host in hosts:
+    for host in _hosts:
         try:
             ssh.transfer_file(modules_dir, __recipes_directory, host)
             ssh.transfer_file(common_dir, __recipes_directory, host)
             ssh.transfer_file(conf_file, __recipes_directory, host)
         except Exception as e:
             raise e
-
-    return True
 
 
 def get_logs():

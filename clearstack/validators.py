@@ -27,11 +27,6 @@ def y_or_n(value):
         raise ValueError("please set 'y' or 'n'")
 
 
-def true_or_false(value):
-    if not value.lower() in ("true", "false"):
-        raise ValueError("please set 'True' or 'False'")
-
-
 def ip_or_hostname(value):
     for v in value.split(","):
         try:
