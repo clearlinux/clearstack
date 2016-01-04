@@ -174,14 +174,25 @@ def get_net_interface():
     return (netifaces.gateways())['default'][netifaces.AF_INET][1]
 
 
+def get_ips():
+    ips = []
+    for iface in netifaces.interfaces():
+        try:
+            for addr in netifaces.ifaddresses(iface)[netifaces.AF_INET]:
+                ips.append(addr['addr'])
+        except:
+            pass
+    return ips
+
+
 def get_ip():
     interface = get_net_interface()
     return netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['addr']
 
 
 def is_localhost(host):
-    return host == "localhost" or host == "127.0.0.1" or \
-        host == socket.gethostname() or host == get_ip()
+    return (host == "localhost" or host == socket.gethostname()
+            or host in get_ips())
 
 
 def has_localhost(hosts):
