@@ -103,7 +103,7 @@ class MariaDB:
                          .format(mariadb_user, mariadb_pw, database, user,
                                  password), debug=False)
         util.run_command("mysql -u{0} -p{1} -e"
-                         " \"GRANT ALL PRIVILEGES ON {2}.* TO '{3}'@'{4}'"
-                         " IDENTIFIED BY '{5}';\""
+                         " \"GRANT ALL PRIVILEGES ON {2}.* TO '{3}'@'%'"
+                         " IDENTIFIED BY '{4}';\""
                          .format(mariadb_user, mariadb_pw, database, user,
-                                 host, password), debug=False)
+                                 password), debug=False)
