@@ -61,6 +61,7 @@ def run_recipe(recipe_file, recipe_src, hosts):
     _run_recipe_in_hosts(recipe_file, recipes_dir, hosts)
     return True
 
+
 def _run_recipe_local(recipe_file):
     if recipe_file.endswith('.py'):
         util.run_command("python3 {0}".format(recipe_file))

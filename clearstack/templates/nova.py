@@ -23,7 +23,8 @@ from common import util
 
 nova = Nova.get()
 config_file = "/etc/nova/nova.conf"
-my_ip = util.get_ip()
+ip_list = CONF['CONFIG_CONTROLLER_HOST'].split(',')
+my_ip = util.find_my_ip_from_config(ip_list)
 
 # Install nova controller
 nova.install()

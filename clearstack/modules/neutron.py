@@ -83,13 +83,13 @@ class Neutron(OpenStackService):
         util.link_file('/etc/neutron/plugins/ml2/ml2_conf.ini',
                        '/etc/neutron/plugin.ini')
 
-    def config_linux_bridge_agent(self):
+    def config_linux_bridge_agent(self, local_ip):
         config = \
             "[linux_bridge]\n" + \
             "physical_interface_mappings = %s\n" % bridge_mappings + \
             "[vxlan]\n" + \
             "enable_vxlan = True\n" + \
-            "local_ip = %s\n" % util.get_ip() + \
+            "local_ip = %s\n" % local_ip + \
             "l2_population = True\n" + \
             "[agent]\n" + \
             "prevent_arp_spoofing = True\n" + \

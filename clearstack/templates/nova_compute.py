@@ -28,7 +28,8 @@ from common import util
 nova = Nova.get()
 config_file = "/etc/nova/nova.conf"
 services = ['libvirtd.socket', 'nova-compute']
-my_ip = util.get_ip()
+ip_list = CONF['CONFIG_COMPUTE_HOSTS'].split(',')
+my_ip = util.find_my_ip_from_config(ip_list)
 
 if CONF['CONFIG_HTTP_SERVICE'] == 'nginx':
     services.extend(['nginx', 'uwsgi@nova-metadata.socket'])

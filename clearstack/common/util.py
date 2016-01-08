@@ -190,6 +190,11 @@ def get_ip():
     return netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['addr']
 
 
+def find_my_ip_from_config(config_ips):
+    ip = set(get_ips()) & set(config_ips)
+    return ip.pop()
+
+
 def is_localhost(host):
     return (host == "localhost" or host == socket.gethostname()
             or host in get_ips())
