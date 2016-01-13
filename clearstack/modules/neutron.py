@@ -34,7 +34,6 @@ tenant_network_types = CONF['CONFIG_NEUTRON_ML2_TENANT_NETWORK_TYPES']
 mechanism_drivers = CONF['CONFIG_NEUTRON_ML2_MECHANISM_DRIVERS']
 vni_ranges = CONF['CONFIG_NEUTRON_ML2_TUNNEL_ID_RANGES']
 type_drivers = CONF['CONFIG_NEUTRON_ML2_TYPE_DRIVERS']
-bridge_mappings = CONF['CONFIG_NEUTRON_LINUXBRIDGE_IFACES']
 flat_networks = CONF['CONFIG_NEUTRON_ML2_FLAT_NETWORKS']
 
 
@@ -83,10 +82,10 @@ class Neutron(OpenStackService):
         util.link_file('/etc/neutron/plugins/ml2/ml2_conf.ini',
                        '/etc/neutron/plugin.ini')
 
-    def config_linux_bridge_agent(self, local_ip):
+    def config_linux_bridge_agent(self, local_ip, local_nic):
         config = \
             "[linux_bridge]\n" + \
-            "physical_interface_mappings = %s\n" % bridge_mappings + \
+            "physical_interface_mappings = public:%s\n" % local_nic + \
             "[vxlan]\n" + \
             "enable_vxlan = True\n" + \
             "local_ip = %s\n" % local_ip + \

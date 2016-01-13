@@ -79,12 +79,6 @@ def init_config():
         #              "CONFIG_NEUTRON_OVS_BRIDGE_IFACES",
         #              "br-ex:%s" % util.get_net_interface())
         # ],
-        "NEUTRON_LINUXBRIDGE_AGENT": [
-            Argument("neutron-linuxbridge-physical-interface-mappings",
-                     "Colon separated linuxbridge <bridge>:<interface> pairs",
-                     "CONFIG_NEUTRON_LINUXBRIDGE_IFACES",
-                     "public:%s" % util.get_net_interface())
-        ],
         "NEUTRON_ML2_PLUGIN": [
             Argument("neutron-ml2-type-drivers",
                      "Comma-separated list of network-type driver entry "

@@ -25,6 +25,7 @@ neutron = Neutron.get()
 config_file = "/etc/neutron/neutron.conf"
 ip_list = CONF['CONFIG_CONTROLLER_HOST'].split(',')
 local_ip = util.find_my_ip_from_config(ip_list)
+local_nic = util.get_nic(local_ip)
 
 # Install neutron controller
 neutron.install()
@@ -40,7 +41,7 @@ neutron.config_auth(config_file)
 
 neutron.config_nova(config_file)
 neutron.config_ml2_plugin()
-neutron.config_linux_bridge_agent(local_ip)
+neutron.config_linux_bridge_agent(local_ip, local_nic)
 neutron.config_l3_agent("/etc/neutron/l3_agent.ini")
 neutron.config_dhcp_agent("/etc/neutron/dhcp_agent.ini")
 neutron.config_metadata_agent("/etc/neutron/metadata_agent.ini")

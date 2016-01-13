@@ -26,12 +26,13 @@ config_file = "/etc/neutron/neutron.conf"
 services = ['nova-compute', 'neutron-linuxbridge-agent']
 ip_list = CONF['CONFIG_COMPUTE_HOSTS'].split(',')
 local_ip = util.find_my_ip_from_config(ip_list)
+local_nic = util.get_nic(local_ip)
 
 neutron.install()
 neutron.config_debug(config_file)
 neutron.config_rabbitmq(config_file)
 neutron.config_auth(config_file)
-neutron.config_linux_bridge_agent(local_ip)
+neutron.config_linux_bridge_agent(local_ip, local_nic)
 neutron.config_neutron_on_nova('/etc/nova/nova.conf')
 
 if util.str2bool(CONF['CONFIG_CEILOMETER_INSTALL']):

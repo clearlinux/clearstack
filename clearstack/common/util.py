@@ -185,6 +185,17 @@ def get_ips():
     return ips
 
 
+def get_nic(ip):
+    for iface in netifaces.interfaces():
+        try:
+            for addr in netifaces.ifaddresses(iface)[netifaces.AF_INET]:
+                if addr['addr'] == ip:
+                    return iface
+        except:
+            pass
+    return None
+
+
 def get_ip():
     interface = get_net_interface()
     return netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['addr']
