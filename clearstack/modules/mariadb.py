@@ -89,7 +89,7 @@ class MariaDB:
                       " the password is incorrect")
             return sys.exit(1)
 
-    def setup_database(self, database, user, password, host):
+    def setup_database(self, database, user, password):
         LOG.debug("setting up database")
         mariadb_user = CONF["CONFIG_MARIADB_USER"]
         mariadb_pw = CONF["CONFIG_MARIADB_PW"]

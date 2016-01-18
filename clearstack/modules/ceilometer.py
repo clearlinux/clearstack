@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-import socket
-
 from modules.keystone import Keystone
 from modules.openstack import OpenStackService
 from modules.conf import CONF
@@ -39,7 +37,7 @@ class Ceilometer(OpenStackService):
 
     def config_database(self, configfile):
         dbpass = CONF['CONFIG_%s_DB_PW' % self._name.upper()]
-        dbhost = socket.gethostbyaddr(CONF['CONFIG_MONGODB_HOST'])[0]
+        dbhost = CONF['CONFIG_MONGODB_HOST']
         config = ("[database]\n"
                   "connection=mongodb://{0}:{1}@{2}:27017/{0}"
                   .format(self._name, dbpass, dbhost))

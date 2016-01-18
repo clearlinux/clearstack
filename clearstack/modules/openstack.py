@@ -18,8 +18,6 @@
 # limitations under the License.
 #
 
-import socket
-
 from common import util
 from common.swupd import Client as swupd_client
 from common.util import LOG
@@ -33,7 +31,7 @@ class OpenStackService:
     _admin_url = ""
     _region = ""
     _user = ""
-    _controller = socket.gethostbyaddr(CONF["CONFIG_CONTROLLER_HOST"])[0]
+    _controller = CONF["CONFIG_CONTROLLER_HOST"]
     _password = ""
 
     def __init__(self):
@@ -160,14 +158,14 @@ class OpenStackService:
 
     def config_database(self, configfile):
         dbpass = CONF['CONFIG_%s_DB_PW' % self._name.upper()]
-        dbhost = socket.gethostbyaddr(CONF['CONFIG_MARIADB_HOST'])[0]
+        dbhost = CONF['CONFIG_MARIADB_HOST']
         config = ("[database]\n"
                   "connection=mysql://{0}:{1}@{2}/{0}"
                   .format(self._name, dbpass, dbhost))
         util.write_config(configfile, config)
 
     def config_rabbitmq(self, configfile):
-        rabbit_host = socket.gethostbyaddr(CONF['CONFIG_AMQP_HOST'])[0]
+        rabbit_host = CONF['CONFIG_AMQP_HOST']
         rabbit_password = CONF['CONFIG_AMQP_AUTH_PASSWORD']
         rabbit_user = CONF['CONFIG_AMQP_AUTH_USER']
         config = \

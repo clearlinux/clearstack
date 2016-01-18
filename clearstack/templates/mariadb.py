@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-import socket
-
 from common.util import LOG
 from common import util
 from modules.conf import CONF
@@ -28,7 +26,6 @@ conf = CONF
 mariadb = MariaDB.get()
 mariadb_user = CONF["CONFIG_MARIADB_USER"]
 mariadb_pw = CONF["CONFIG_MARIADB_PW"]
-controller = socket.gethostbyaddr(CONF["CONFIG_CONTROLLER_HOST"])[0]
 
 if util.str2bool(conf['CONFIG_MARIADB_INSTALL']):
     mariadb.install()
@@ -43,4 +40,4 @@ for database in databases:
                                                % database.upper()]):
         LOG.info("Setting up mariadb for %s" % database)
         password = CONF['CONFIG_%s_DB_PW' % database.upper()]
-        mariadb.setup_database(database, database, password, controller)
+        mariadb.setup_database(database, database, password)
