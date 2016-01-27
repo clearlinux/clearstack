@@ -35,37 +35,40 @@ class Rabbitmq:
         stdout = None
         stderr = None
         try:
+            LOG.debug("Checking if rabbitmq user '{0}' exists".format(user))
             stdout, stderr = util.run_command("rabbitmqctl list_users"
                                               " | grep {0}".format(user))
         except:
             pass
 
         if not stdout:
+            LOG.debug("rabbitmq user '{0}' does not exists".format(user))
             return False
 
+        LOG.debug("rabbitmq user '{0}' does exists".format(user))
         return True
 
     def install(self):
         swupd_client.install("message-broker-rabbitmq")
 
     def start_server(self):
-        LOG.debug("starting services")
+        LOG.debug("starting rabbitmq-server service")
         util.run_command("systemctl enable rabbitmq-server")
         util.run_command("systemctl restart rabbitmq-server")
 
     def add_user(self, auth_user, auth_pw):
         """ todo: what we do with guest """
-        LOG.debug("adding user")
+        LOG.debug("adding rabbitmq user '{0}'".format(auth_user))
         if not self.user_exists(auth_user):
             util.run_command("rabbitmqctl add_user {0} {1}"
                              .format(auth_user, auth_pw), debug=False)
 
     def delete_user(self, user):
-        LOG.debug("deleting user")
+        LOG.debug("deleting rabbitmq user '{0}'".format(user))
         util.run_command("rabbitmqctl delete_user {1}"
                          .format(user))
 
     def set_permissions(self, auth_user, permissions):
-        LOG.debug("setting permissions")
+        LOG.debug("setting rabbitmq permissions for user '{0}'".format(auth_user))
         util.run_command("rabbitmqctl set_permissions {0} {1}"
                          .format(auth_user, permissions))
