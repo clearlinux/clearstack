@@ -50,7 +50,7 @@ class Nova(OpenStackService):
         self.install("openstack-compute")
 
     def sync_database(self):
-        LOG.debug("syncing database")
+        LOG.debug("populating nova database")
         util.run_command("su -s /bin/sh -c \"nova-manage db sync\" nova")
 
     def ceilometer_enable(self, configfile):
