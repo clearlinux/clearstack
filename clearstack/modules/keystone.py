@@ -50,17 +50,18 @@ class Keystone(OpenStackService):
             "OS_IDENTITY_API_VERSION": "3"}
 
     def sync_database(self):
-        LOG.debug("syncing database")
+        LOG.debug("populating keystone database")
         util.run_command("su -s /bin/sh -c"
                          " \"keystone-manage db_sync\" keystone")
 
     def create_project(self, project, description):
-        LOG.debug("setting up %s project" % project)
         try:
             """ test if project already exists """
+            LOG.debug("checking if project '{0}' exists".format(project))
             util.run_command("openstack project show %s" % project,
                              environ=self._env)
         except:
+            LOG.debug("setting up project '{0}'".format(project))
             util.run_command("openstack project create --domain default"
                              " --description \"%s\" %s"
                              % (description, project), environ=self._env)
