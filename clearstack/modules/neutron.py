@@ -50,7 +50,7 @@ class Neutron(OpenStackService):
                    .format(CONF['CONFIG_CONTROLLER_HOST']))
 
     def sync_database(self):
-        LOG.debug("syncing database")
+        LOG.debug("populating neutron database")
         util.run_command('su -s /bin/sh -c "neutron-db-manage '
                          '--config-file /etc/neutron/neutron.conf '
                          '--config-file /etc/neutron/plugins/ml2/ml2_conf.ini '
@@ -212,9 +212,11 @@ class Neutron(OpenStackService):
         cidr_start = (cidr.network_address + 2).exploded
         cidr_end = (cidr.broadcast_address - 1).exploded
         try:
+            LOG.debug("checking if network '{0}' exists".format(name))
             util.run_command("neutron net-show %s" % name,
                              environ=self._env)
         except:
+            LOG.debug("creating network '{0}'".format(name))
             cmd = "neutron net-create %s" % name
             if public:
                 cmd += (" --provider:physical_network public"
@@ -232,9 +234,11 @@ class Neutron(OpenStackService):
 
     def create_router(self, router, gw, interfaces):
         try:
+            LOG.debug("checking if router '{0}' exists".format(name))
             util.run_command("neutron router-show %s" % router,
                              environ=self._env)
         except:
+            LOG.debug("creating router '{0}'".format(name))
             util.run_command("neutron router-create %s" % router,
                              environ=self._env)
             util.run_command("neutron router-gateway-set %s %s"
@@ -244,6 +248,8 @@ class Neutron(OpenStackService):
                                  % (router, i), environ=self._env)
 
     def ceilometer_enable(self, configfile):
+        LOG.debug("setting up rabbitmq configuration"
+                  " in '{0}'".format(configfile))
         self.config_rabbitmq(configfile)
         config = ("[DEFAULT]\n"
                   "notification_driver = messagingv2\n")
