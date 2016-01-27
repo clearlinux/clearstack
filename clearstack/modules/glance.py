@@ -37,16 +37,17 @@ class Glance(OpenStackService):
     _public_url = "http://{0}:9292".format(CONF['CONFIG_CONTROLLER_HOST'])
 
     def sync_database(self):
-        LOG.debug("syncing database")
+        LOG.debug("populating glance database")
         util.run_command("su -s /bin/sh -c"
                          " \"glance-manage db_sync\" glance")
 
     def create_image(self, name, format, url, public=False):
-        LOG.debug("Creating image %s" % name)
         try:
+            LOG.debug("checking if image '{0}' exists".format(name))
             util.run_command("openstack image show %s" % name,
                              environ=self._env)
         except:
+            LOG.debug("creating image '{0}'".format(name))
             command = ("openstack image create --disk-format %s %s"
                        % (format, name))
             if os.path.isfile(url):
@@ -58,6 +59,8 @@ class Glance(OpenStackService):
             util.run_command(command, environ=self._env)
 
     def ceilometer_enable(self, configfile):
+        LOG.debug("setting up rabbitmq configuration"
+                  " in '{0}'".format(configfile))
         self.config_rabbitmq(configfile)
         config = ("[DEFAULT]\n"
                   "notification_driver = messagingv2\n")
