@@ -34,7 +34,7 @@ class MariaDB:
         swupd_client.install("database-mariadb")
 
     def start_server(self):
-        LOG.debug("starting services")
+        LOG.debug("starting mariadb service")
         util.run_command("systemctl enable mariadb")
         util.run_command("systemctl restart mariadb")
 
@@ -49,10 +49,11 @@ class MariaDB:
         character-set-server = utf8
         bind-address = 0.0.0.0
         """
+        LOG.debug("configuring mariadb options in '{0}'".format(config_file))
         util.write_config(config_file, config)
 
     def secure_installation(self, user, password):
-        LOG.debug("secure installation mariadb")
+        LOG.debug("calling mariadb secure installation")
         try:
             """ test if mysql has a password """
             util.run_command("mysql -u{0} -e \"\"".format(user), debug=False)
@@ -90,7 +91,7 @@ class MariaDB:
             return sys.exit(1)
 
     def setup_database(self, database, user, password):
-        LOG.debug("setting up database")
+        LOG.debug("setting up '{0}' database".format(database))
         mariadb_user = CONF["CONFIG_MARIADB_USER"]
         mariadb_pw = CONF["CONFIG_MARIADB_PW"]
         util.run_command("mysql -u{0} -p{1} -e"
