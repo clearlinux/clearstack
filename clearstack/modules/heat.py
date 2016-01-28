@@ -41,7 +41,7 @@ class Heat(OpenStackService):
     domain_name = CONF['CONFIG_HEAT_DOMAIN']
 
     def sync_database(self):
-        LOG.debug("syncing database")
+        LOG.debug("populating heat database")
         util.run_command("su -s /bin/sh -c"
                          " \"heat-manage db_sync\" heat")
 
