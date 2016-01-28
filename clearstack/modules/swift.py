@@ -20,6 +20,7 @@ import os
 import shutil
 
 from common import util
+from commmon.util import LOG
 from modules.openstack import OpenStackService
 from modules.conf import CONF
 from common.singleton import Singleton
@@ -87,6 +88,7 @@ class Swift(OpenStackService):
             with open(name, 'wb') as f:
                 f.seek(1024 * 1024 * 1024 * size - 1)
                 f.write(b"\0")
+            LOG.("formatting '{0}' as XFS".format(name))
             util.run_command("mkfs.xfs %s" % name)
 
         devs = CONF['CONFIG_SWIFT_STORAGES']
@@ -140,14 +142,19 @@ class Swift(OpenStackService):
         for ringtype, port in [('object', '6000'),
                                ('container', '6001'),
                                ('account', 6002)]:
+            LOG.debug("creating '{0}' ring with {1} "
+                      "replicas".format(ringtype, replicas))
             cmd = ("swift-ring-builder {0}.builder create 10 {1} 1"
                    .format(ringtype, replicas))
             util.run_command(cmd)
             for device in self._devices:
+                LOG.debug("adding '{0}' storage node on ring "
+                          "'{1}'".format(device['name'], ringtype))
                 cmd = ("swift-ring-builder %s.builder add --region 1 "
                        "--zone %s --ip %s --port %s --device %s --weight 100"
                        % (ringtype, device['zone'], ip, port, device['name']))
                 util.run_command(cmd)
+            LOG.debug("rebalancing ring '{0}'".format(ringtype))
             cmd = "swift-ring-builder {0}.builder rebalance".format(ringtype)
             util.run_command(cmd)
             if os.path.isfile("/etc/swift/%s.ring.gz" % ringtype):
