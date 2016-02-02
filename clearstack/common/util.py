@@ -59,6 +59,12 @@ def port_open(port):
     return (sck.connect_ex(('127.0.0.1', port)) == 0)
 
 
+def service_status(service):
+    """Return status of a given systemd service."""
+    stdout, stderr = run_command("systemctl is-active " + str(service))
+    return (stdout.strip().decode("utf-8"))
+
+
 def setup_debugging(debug, is_remote_host=True):
     if not os.path.isdir(LOG_DIR):
         os.makedirs(LOG_DIR)
