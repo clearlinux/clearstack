@@ -52,6 +52,13 @@ def _print_error_message(self, e, file_name):
               file_name))
 
 
+def port_open(port):
+    """Return True if given port is already open in localhost.
+       Return False otherwise."""
+    sck = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    return (sck.connect_ex(('127.0.0.1', port)) == 0)
+
+
 def setup_debugging(debug, is_remote_host=True):
     if not os.path.isdir(LOG_DIR):
         os.makedirs(LOG_DIR)
