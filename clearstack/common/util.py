@@ -65,6 +65,12 @@ def service_status(service):
     return (stdout.strip().decode("utf-8"))
 
 
+def service_enabled(service):
+    """Return True if systemd service is enabled, False otherwise"""
+    stdout, stderr = run_command("systemctl is-enabled " + str(service))
+    return (stdout.strip() == b"enabled")
+
+
 def setup_debugging(debug, is_remote_host=True):
     if not os.path.isdir(LOG_DIR):
         os.makedirs(LOG_DIR)
