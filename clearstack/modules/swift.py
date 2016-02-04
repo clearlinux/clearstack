@@ -88,7 +88,7 @@ class Swift(OpenStackService):
             with open(name, 'wb') as f:
                 f.seek(1024 * 1024 * 1024 * size - 1)
                 f.write(b"\0")
-            LOG.("formatting '{0}' as XFS".format(name))
+            LOG.debug("formatting '{0}' as XFS".format(name))
             util.run_command("mkfs.xfs %s" % name)
 
         devs = CONF['CONFIG_SWIFT_STORAGES']

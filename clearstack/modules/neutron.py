@@ -234,11 +234,11 @@ class Neutron(OpenStackService):
 
     def create_router(self, router, gw, interfaces):
         try:
-            LOG.debug("checking if router '{0}' exists".format(name))
+            LOG.debug("checking if router '{0}' exists".format(router))
             util.run_command("neutron router-show %s" % router,
                              environ=self._env)
         except:
-            LOG.debug("creating router '{0}'".format(name))
+            LOG.debug("creating router '{0}'".format(router))
             util.run_command("neutron router-create %s" % router,
                              environ=self._env)
             util.run_command("neutron router-gateway-set %s %s"
