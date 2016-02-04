@@ -69,6 +69,7 @@ class Rabbitmq:
                          .format(user))
 
     def set_permissions(self, auth_user, permissions):
-        LOG.debug("setting rabbitmq permissions for user '{0}'".format(auth_user))
+        LOG.debug("setting rabbitmq permissions for "
+                  "user '{0}'".format(auth_user))
         util.run_command("rabbitmqctl set_permissions {0} {1}"
                          .format(auth_user, permissions))
