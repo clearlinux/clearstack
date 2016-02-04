@@ -52,6 +52,25 @@ def _print_error_message(self, e, file_name):
               file_name))
 
 
+def port_open(port):
+    """Return True if given port is already open in localhost.
+       Return False otherwise."""
+    sck = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    return (sck.connect_ex(('127.0.0.1', port)) == 0)
+
+
+def service_status(service):
+    """Return status of a given systemd service."""
+    stdout, stderr = run_command("systemctl is-active " + str(service))
+    return (stdout.strip().decode("utf-8"))
+
+
+def service_enabled(service):
+    """Return True if systemd service is enabled, False otherwise"""
+    stdout, stderr = run_command("systemctl is-enabled " + str(service))
+    return (stdout.strip() == b"enabled")
+
+
 def setup_debugging(debug, is_remote_host=True):
     if not os.path.isdir(LOG_DIR):
         os.makedirs(LOG_DIR)
