@@ -226,8 +226,9 @@ def find_my_ip_from_config(config_ips):
 
 
 def is_localhost(host):
-    return (host == "localhost" or host == socket.gethostname()
-            or host in get_ips())
+    return (host == "localhost" or
+            host == socket.gethostname() or
+            host in get_ips())
 
 
 def has_localhost(hosts):
