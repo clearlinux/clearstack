@@ -17,6 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import sys
 
 from common import util
 from common.singleton import Singleton
@@ -51,10 +52,37 @@ class Rabbitmq:
     def install(self):
         swupd_client.install("message-broker-rabbitmq")
 
+    def enable_server(self):
+        enabled = util.service_enabled("rabbitmq-server.service")
+        if not enabled:
+            util.run_command("systemctl enable rabbitmq-server")
+
     def start_server(self):
-        LOG.debug("starting rabbitmq-server service")
-        util.run_command("systemctl enable rabbitmq-server")
-        util.run_command("systemctl restart rabbitmq-server")
+        LOG.debug("enabling rabbitmq-server service")
+        self.enable_server()
+        status = util.service_status("rabbitmq-server.service")
+        LOG.debug("rabbitmq-server status: " + status)
+        if status == "active":
+            LOG.debug("rabbitmq-server service is already running")
+            return
+        elif status == "inactive" or status == "unknown":
+            LOG.debug("starting rabbitmq-server service")
+            util.run_command("systemctl restart rabbitmq-server")
+        elif status == "failed":
+            # try to re-run the service, catch the error if fails again
+            try:
+                LOG.debug("rabbitmq-server failed to start previously. "
+                          "Trying to start service...")
+                util.run_command("systemctl restart rabbitmq-server")
+            except:
+                LOG.debug("rabbitmq-server.service failed to start."
+                          "Try 'rm -rf /var/lib/rabbitmq/*' and re-run"
+                          "clearstack")
+                sys.exit(1)
+        else:
+            LOG.debug("Error: rabbitmq-server service status"
+                      " '{0}' unknown... Exiting clearstack".format(status))
+            sys.exit(1)
 
     def add_user(self, auth_user, auth_pw):
         """ todo: what we do with guest """
