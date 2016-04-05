@@ -1,3 +1,11 @@
+[DEPRECATED NOTICE]
+--------------------
+_This projet is no longer supported. Use this repository instead:_
+https://github.com/clearlinux/clear-config-management
+
+
+---
+
 
 A tool to deploy components of Openstack on multiple servers with Clear Linux* Project for Intel Architecture installed
 
@@ -14,10 +22,10 @@ Contents:
 
 ====
 
-2. Compiling
+2. Installing
 
-$ pip3 install -r requirements-py3.txt
-$ python3 setup.py install
+   $ pip3 install -r requirements-py3.txt
+   $ python3 setup.py install
 
 ====
 
