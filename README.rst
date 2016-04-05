@@ -1,11 +1,9 @@
 [DEPRECATED NOTICE]
 --------------------
-_This projet is no longer supported. Use this repository instead:_
+This projet is no longer supported. Use this repository instead:
 https://github.com/clearlinux/clear-config-management
 
-
----
-
+====
 
 A tool to deploy components of Openstack on multiple servers with Clear Linux* Project for Intel Architecture installed
 
